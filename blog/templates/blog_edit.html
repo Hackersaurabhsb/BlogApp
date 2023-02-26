@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Edit blog {% endblock %}
+{% block content %}
+<form action="" method="post">
+    <label for="Title">Title</label>
+    <input type="text" name="title" id="" value="{{ post.title }}">
+    <label for="Body">Body</label>
+    <input type="text" id="body" name="body" value="{{ post.body }}" style="height: 300px; width: 300px;">
+    <input type="hidden" name="next" value="{{ request.path }}">  <!---to get back to original path--->
+    <input type="submit" value="Edit">
+    {% csrf_token %}
+</form>
+{% endblock %}

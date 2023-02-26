@@ -1,0 +1,85 @@
+{% load static %}
+<html>
+<head>
+<link rel="stylesheet" href="{% static 'base.css' %}">
+ <!-- <link href="{% static 'blog.css' %}" rel="stylesheet"> -->
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ <title>Document</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+   $(document).ready(function() {
+        // messages timeout for 10 sec 
+        setTimeout(function() {
+            $('.message').fadeOut('slow');
+        }, 1000); // <-- time in milliseconds, 1000 =  1 sec
+
+        // delete message
+        $('.del-msg').live('click',function(){
+            $('.del-msg').parent().attr('style', 'display:none;');
+        })
+    });
+</script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #e3f2fd;">
+      <img src="{% static 'logo.png' %}" style="height: 40px; width: 40px; " alt="">
+        <a class="navbar-brand" href="#"> AwwweSome Blogs</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+     
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+          {% if request.user.is_authenticated %}
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'my_blogs' %}" class="nav-link">My Blogs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'make_blog' %}">Create Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+            
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><span class="glyphicon glyphicon-user"></span>Welcome {{ request.user.first_name }}</li>
+          </ul>
+          {% endif %}
+          
+        </div>
+        
+      </nav>
+<div id="content">
+ {% block content %}
+ {% if messages %}
+ <ul class="messages">
+ {% for message in messages %}
+ <li class="{{ message.tags }}">
+ {{ message|safe }}
+ <a href="#" class="del-msg close">&times;</a>
+ </li>
+ {% endfor %}
+ </ul>
+ {% endif %}
+ {% endblock %}
+ </div>
+ <!-- <div id="sidebar">
+ <h2>My blog</h2>
+ <p>This is my blog.</p>
+ <a href="{% url 'make_blog' %}">
+    CREATE A NEW BLOG
+</a>
+ </div>  -->
+</body>
+</html>

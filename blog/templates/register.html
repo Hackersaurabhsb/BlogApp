@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 Login Form with validation Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="{% static 'login.css' %}">
+  <link rel="stylesheet" href="{% static 'blog.css' %}">
+  
+  </head>
+
+{% block content %}
+{% if form.password.errors %}
+<p>
+    Passwords don,t match
+</p>
+{% endif %}
+<div id="login-form-wrap">
+    <h2>Sign-up</h2>
+    <form action="{% url 'register' %}" id="login-form" method="post">
+      {{ form.as_p }}
+      {% csrf_token %}
+      <input type="submit" id="sign-up" value="Create Account">
+    </form>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Login Form with validation Example</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="{% static 'login.css' %}">
+<link rel="stylesheet" href="{% static 'base.css' %}">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+{% block content %}
+
+<div id="login-form-wrap">
+  <h1>Login</h1>
+  {% if login_form.password.errors %}
+<p>
+    Enter the correct password
+</p>
+{% endif %}
+  <form action="{% url 'login' %}" id="login-form" method="post">
+	{{ login_form.as_p }}
+	{% csrf_token %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <p><input type="submit" value="Login"></p>
+  </form>
+  <div id="create-account-wrap">
+    <p>Not a member? <a href="{% url 'register' %}">Create Account</a><p>
+	 </div><!--create-account-wrap-->
+</div><!--login-form-wrap-->
+<!-- partial -->
+{% endblock %}
+</body>
+</html>

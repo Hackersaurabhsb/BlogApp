@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+    {% block content %}
+    {% if blog_unsave %}
+    <h2>
+        new post added
+    </h2>
+    {% else %}
+    <h2>Add a New Blog</h2>
+    <form action="{% url 'make_blog' %}" method="post">
+        {{ blogobject.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Add Post"></p>
+    </form>
+    {% endif %}
+    {% endblock %}

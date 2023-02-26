@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+ <h1>{{ post.title }}</h1>
+ <p class="date">
+ Published {{ post.publish }} by {{ post.author }}
+ </p>
+ {{ post.body|linebreaks }}
+<p>
+    <p class="tags">Tags: {{ post.tags.all|join:", " }}</p>
+<a href="{% url 'post_share' post.id %}" style="font-size: larger;">
+Share this post
+</a>
+<a href="{% url 'edit' post.id %}"  style="font-size: larger;">Edit Blog</a>
+{% with comments.count as total_comments %}
+<h2>
+    {{total_comments}} comment{{total_comments|pluralize}}
+
+    <!---The with tag allows us to assign a value to a new variable that 
+   will be available to be used until the endwith  tag-->
+</h2>
+{% endwith %}
+{% for comment in comments %}
+ <div class="comment">
+ <p class="info">
+ Comment {{ forloop.counter }} by {{ comment.name }}
+ {{ comment.created }}
+ </p>
+ {{ comment.body|linebreaks }}
+ </div>
+
+{% empty %}
+ <p>There are no comments yet.</p>
+{% endfor %}
+</p>
+<h2>Similar posts</h2>
+{% for post in similar_posts %}
+ <p>
+ <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+ </p>
+{% empty %}
+ There are no similar posts yet.
+{% endfor %}
+{% if new_comment %}
+ <h2>Your comment has been added.</h2>
+{% else %}
+ <h2>Add a new comment</h2>
+ <form action="" method="post">
+ {{ comment_form.as_p }}
+ {% csrf_token %}
+ <p><input type="submit" value="Add comment"></p>
+ </form>
+{% endif %}
+
+{% endblock %}
+
+
+<!----The {% with % template tag is useful to avoid hitting the database or 
+accessing expensive methods multiple times-->
+
+<!---The pluralize template filter displays an "s" if the value is different than 1. The 
+preceding text will be rendered as 0 comments, 1 comment, or N comments-->
+
+<!----->
